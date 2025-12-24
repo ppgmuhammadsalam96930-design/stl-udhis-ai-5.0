@@ -5,6 +5,12 @@
 import time
 import hashlib
 from collections import deque, defaultdict
+import ctypes
+import time
+
+sc = ctypes.CDLL("./libstealthcore.so")
+sc.sc_jitter_ms.restype = ctypes.c_uint
+sc.sc_entropy8.restype = ctypes.c_ubyte
 
 # ==================== CONFIG ====================
 
@@ -57,6 +63,11 @@ def observe_and_influence(request, context):
         "bias": "neutral",
         "note": None
     }
+def stealth_touch():
+    d = sc.sc_jitter_ms()
+    if d:
+        time.sleep(d / 1000)
+    return sc.sc_entropy8()
 
     # ==================== BEHAVIOR ANALYSIS ====================
 
