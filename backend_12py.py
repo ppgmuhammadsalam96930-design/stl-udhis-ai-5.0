@@ -96,6 +96,33 @@ async def main():
                 response = await nc.request("core.backend.governor", b'{"ping":true}', timeout=1)
                 GOVERNOR_LAST_SEEN = time.time()
                 # print("💚 Governor Alive")
+# =========================
+# META-REASONING LAYER
+# =========================
+
+def estimate_depth(text: str) -> int:
+    """
+    Estimasi kedalaman pertanyaan (ringan & cepat)
+    """
+    score = 0
+    if len(text) > 120:
+        score += 3
+    if any(k in text for k in ["mengapa", "bagaimana", "arsitektur", "implikasi", "konsekuensi"]):
+        score += 3
+    if any(k in text for k in ["contoh", "langkah", "detail"]):
+        score += 2
+    return score
+
+def decide_mode(intent: str, depth: int) -> str:
+    """
+    Menentukan MODE BERPIKIR AI
+    """
+    if depth > 7 and intent == "vault":
+        return "reflective_lore"
+    elif intent == "edu":
+        return "structured_teaching"
+    else:
+        return "direct_response"
             except:
                 print("Lr [ALERT] GOVERNOR (BACKEND 6) SILENT/DEAD!")
                 # Aksi Darurat: Auto-restart script atau kirim sinyal ke guard.exe
