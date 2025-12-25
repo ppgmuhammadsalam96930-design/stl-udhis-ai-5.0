@@ -1,0 +1,50 @@
+# =========================
+# RUNTIME BINARIES (LOCAL)
+# =========================
+guard.exe
+nats-server.exe
+*.exe
+
+# =========================
+# AUTO-START / LOCAL SCRIPTS
+# =========================
+start_ai_stack.bat
+*.ps1
+
+# =========================
+# GO BUILD ARTIFACTS
+# =========================
+/go
+*.out
+*.test
+*.prof
+
+# =========================
+# NODE / FRONTEND
+# =========================
+node_modules/
+dist/
+.vite/
+
+# =========================
+# PYTHON
+# =========================
+__pycache__/
+*.pyc
+.env
+.venv/
+venv/
+
+# =========================
+# OS / EDITOR NOISE
+# =========================
+.DS_Store
+Thumbs.db
+*.log
+
+# =========================
+# SECURITY / LOCAL STATE
+# =========================
+*.key
+*.secret
+*.token

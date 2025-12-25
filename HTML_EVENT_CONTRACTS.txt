@@ -1,0 +1,81 @@
+========================================
+STL-UDHIS AI — HTML EVENT CONTRACTS
+========================================
+
+TUJUAN:
+File ini adalah SINGLE SOURCE OF TRUTH
+untuk:
+- Perilaku HTML
+- Event lifecycle
+- Integrasi backend (NATS / Guard)
+- Tanpa hard dependency ke runtime
+
+----------------------------------------
+1. HTML SOVEREIGN RULES
+----------------------------------------
+
+- HTML harus RENDER DAHULU (optimistic render)
+- Backend hanya enrichment
+- UI tidak boleh freeze jika backend error
+- fetch() WAJIB .catch(()=>{})
+- Tidak ada blocking await tanpa fallback
+- Semua interaksi UI harus idempotent
+
+----------------------------------------
+2. EVENT NAMING CONTRACT
+----------------------------------------
+
+Event format:
+  ui.<module>.<action>
+
+Contoh:
+  ui.chat.submit
+  ui.edu.generate
+  ui.vault.open
+
+----------------------------------------
+3. BACKEND INTENT MAPPING
+----------------------------------------
+
+INTENT → NATS SUBJECT
+
+1  → core.backend.edu
+2  → core.backend.vault
+3  → core.backend.nexus
+6  → core.backend.governor
+9  → core.backend.infra
+
+----------------------------------------
+4. FAILURE BEHAVIOR (WAJIB)
+----------------------------------------
+
+Jika backend offline:
+- UI tetap render
+- Tampilkan pesan ramah
+- Tidak throw error ke global
+
+Jika timeout:
+- Gunakan cached / local reasoning
+- Log ke console (DEV MODE saja)
+
+----------------------------------------
+5. SECURITY & ISOLATION
+----------------------------------------
+
+- HTML tidak tahu IP backend
+- HTML hanya tahu localhost:8080
+- Semua routing lewat guard.exe
+- Tidak ada hardcoded API key di HTML
+
+----------------------------------------
+6. EVOLUTION RULE
+----------------------------------------
+
+- File ini boleh berkembang
+- Tapi tidak boleh dihapus
+- Semua perubahan arsitektur
+  HARUS tercermin di sini
+
+========================================
+END OF CONTRACT
+========================================
